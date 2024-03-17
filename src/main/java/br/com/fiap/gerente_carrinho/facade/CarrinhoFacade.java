@@ -5,6 +5,7 @@ import br.com.fiap.gerente_carrinho.repositorio.ICarrinhoRepositorio;
 import br.com.fiap.gerente_carrinho.utils.CodigoResposta;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Service
 public class CarrinhoFacade {
@@ -48,6 +50,27 @@ public class CarrinhoFacade {
         }
 
         carrinhoRepositorio.save(carrinho);
+
+        return CodigoResposta.OK;
+    }
+
+    public CodigoResposta remove(Carrinho carrinho) {
+        ResponseEntity<String> response;
+        try {
+            response = restTemplate.getForEntity(
+                    "http://localhost:8081/api/itens/{id}",
+                    String.class,
+                    carrinho.getId_itens()
+            );
+
+            JsonNode itensJson = objectMapper.readTree(response.getBody());
+            int id = itensJson.get("id").asInt();
+        } catch (HttpClientErrorException e) {
+            return CodigoResposta.INTEM_NAO_EXISTE;
+        } catch (IOException e) {
+            return CodigoResposta.ERRO_GENERICO;
+        }
+        carrinhoRepositorio.deletaItemCarrinho(carrinho.getId_usuario(), carrinho.getId_itens());
 
         return CodigoResposta.OK;
     }

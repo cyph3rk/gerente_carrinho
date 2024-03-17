@@ -1,38 +1,38 @@
 package br.com.fiap.gerente_carrinho.controller;
 
 import br.com.fiap.gerente_carrinho.dominio.Carrinho;
-import br.com.fiap.gerente_carrinho.utils.CodigoResposta;
+import br.com.fiap.gerente_carrinho.dominio.Conta;
 import br.com.fiap.gerente_carrinho.facade.CarrinhoFacade;
-import br.com.fiap.gerente_carrinho.repositorio.ICarrinhoRepositorio;
+import br.com.fiap.gerente_carrinho.facade.ContaFacade;
+import br.com.fiap.gerente_carrinho.repositorio.IContaRepositorio;
+import br.com.fiap.gerente_carrinho.utils.CodigoResposta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @RestController
-@RequestMapping("/api/carrinho")
-public class CarrinhoController {
+@RequestMapping("/api/conta")
+public class ContaController {
 
     public static final String ERRO_IEM = "Item NÃO encontrado.";
     public static final String ERRO_CLIENTE = "Cliente NÃO encontrado.";
-    public static final String SUCESSO = "Item ADICIONADO ao carrinho com sucesso.";
+    public static final String SUCESSO = "Conta ADICIONADO com sucesso.";
 
-    private final ICarrinhoRepositorio carrinhoRepositorio;
+    private final IContaRepositorio contaRepositorio;
 
-    private final CarrinhoFacade carrinhoFacade;
+    private final ContaFacade contaFacade;
 
     @Autowired
-    public CarrinhoController(ICarrinhoRepositorio servicosRepositorio, CarrinhoFacade carrinhoFacade) {
-        this.carrinhoRepositorio = servicosRepositorio;
-        this.carrinhoFacade = carrinhoFacade;
+    public ContaController(IContaRepositorio servicosRepositorio, ContaFacade contaFacade) {
+        this.contaRepositorio = servicosRepositorio;
+        this.contaFacade = contaFacade;
     }
 
     @PostMapping
-    public ResponseEntity<?> salva(@RequestBody Carrinho carrinho) {
+    public ResponseEntity<?> salva(@RequestBody Conta conta) {
 
-        CodigoResposta resp = carrinhoFacade.salvar(carrinho);
+        CodigoResposta resp = contaFacade.salvar(conta);
         if ( resp == CodigoResposta.INTEM_NAO_EXISTE) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ERRO_IEM);
         }
@@ -44,9 +44,9 @@ public class CarrinhoController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Object> deleteItensPorId(@RequestBody Carrinho carrinho) {
+    public ResponseEntity<Object> deletePorId(@PathVariable Long id) {
 
-        carrinhoFacade.remove(carrinho);
+        contaFacade.remove(id);
         return ResponseEntity.ok("Item DELETADO do carrinho com sucesso.");
     }
 

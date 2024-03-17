@@ -36,6 +36,20 @@ CREATE TABLE IF NOT EXISTS public.carrinho
     PRIMARY KEY (id)
 );
 
+CREATE TABLE IF NOT EXISTS public.conta
+(
+    id serial NOT NULL,
+    data timestamptz NOT NULL,
+    cliente text NOT NULL,
+    produto text NOT NULL,
+    valor text NOT NULL,
+    quantidade text NOT NULL,
+    total text NOT NULL,
+    situacao text NOT NULL,
+    PRIMARY KEY (id)
+);
+
+
 ALTER TABLE IF EXISTS public.carrinho
     ADD FOREIGN KEY (id_usuario)
         REFERENCES public.usuario (id) MATCH SIMPLE
