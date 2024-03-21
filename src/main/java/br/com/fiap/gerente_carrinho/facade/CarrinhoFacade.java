@@ -5,15 +5,16 @@ import br.com.fiap.gerente_carrinho.repositorio.ICarrinhoRepositorio;
 import br.com.fiap.gerente_carrinho.utils.CodigoResposta;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+
 import java.io.IOException;
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CarrinhoFacade {
@@ -21,6 +22,8 @@ public class CarrinhoFacade {
     private RestTemplate restTemplate;
 
     private ObjectMapper objectMapper;
+
+
 
     private final ICarrinhoRepositorio carrinhoRepositorio;
 
@@ -74,5 +77,14 @@ public class CarrinhoFacade {
 
         return CodigoResposta.OK;
     }
+
+    public List<Carrinho> listaItensCarrinhoUsuario(Long id_usuario) {
+
+        List<Carrinho> lisrtaCarrinho = carrinhoRepositorio.findItemsById_usuario(id_usuario);
+
+        return lisrtaCarrinho.stream()
+                .collect(Collectors.toList());
+    }
+
 
 }

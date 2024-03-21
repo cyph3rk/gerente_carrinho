@@ -17,4 +17,6 @@ public interface ICarrinhoRepositorio extends JpaRepository<Carrinho, Long> {
     @Query("delete from Carrinho p where p.id_usuario = :id_usuario and p.id_itens = :id_itens")
     void deletaItemCarrinho(Long id_usuario, Long id_itens);
 
+    @Query("from Carrinho p where p.id_usuario = :idUsuario")
+    List<Carrinho> findItemsById_usuario(Long idUsuario);
 }

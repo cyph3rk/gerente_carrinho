@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@AllArgsConstructor
 @Table(name = "carrinho")
 public class Carrinho {
 

@@ -1,6 +1,7 @@
 package br.com.fiap.gerente_carrinho.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,11 @@ public class AppConfig {
 
         return restTemplate;
 
+    }
+
+    @Bean
+    public ModelMapper obterModelMapper() {
+        return new ModelMapper();
     }
 
 }
