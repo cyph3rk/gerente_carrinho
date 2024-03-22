@@ -11,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/conta")
 public class ContaController {
@@ -43,11 +46,23 @@ public class ContaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(SUCESSO);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> deletePorId(@PathVariable Long id) {
 
         contaFacade.remove(id);
         return ResponseEntity.ok("Item DELETADO do carrinho com sucesso.");
+    }
+
+    @GetMapping("/{data}")
+    public ResponseEntity<Object> listaItensCarrinhoUsuario(@PathVariable LocalDateTime data) {
+
+        List<Conta> conta = contaFacade.listaContaUsuario(data);
+
+        if (conta.size() == 0) {
+            return ResponseEntity.badRequest().body("{\"Erro\": \"Item NÃO cadastrado.\"}");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(conta);
     }
 
 }

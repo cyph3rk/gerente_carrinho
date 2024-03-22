@@ -14,6 +14,9 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ContaFacade {
@@ -39,4 +42,11 @@ public class ContaFacade {
         return CodigoResposta.OK;
     }
 
+    public List<Conta> listaContaUsuario(LocalDateTime data) {
+
+        List<Conta> listaConta = contaRepositorio.findItemsByData(data);
+
+        return listaConta.stream()
+                .collect(Collectors.toList());
+    }
 }
