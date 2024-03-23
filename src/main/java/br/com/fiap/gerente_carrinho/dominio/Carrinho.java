@@ -2,7 +2,6 @@ package br.com.fiap.gerente_carrinho.dominio;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,7 +25,5 @@ public class Carrinho {
 
     @JsonProperty
     private String quantidade;
-
-    public Carrinho() { };
 
 }

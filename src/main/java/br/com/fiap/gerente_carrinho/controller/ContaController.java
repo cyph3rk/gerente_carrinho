@@ -1,10 +1,7 @@
 package br.com.fiap.gerente_carrinho.controller;
 
-import br.com.fiap.gerente_carrinho.dominio.Carrinho;
 import br.com.fiap.gerente_carrinho.dominio.Conta;
-import br.com.fiap.gerente_carrinho.facade.CarrinhoFacade;
 import br.com.fiap.gerente_carrinho.facade.ContaFacade;
-import br.com.fiap.gerente_carrinho.repositorio.IContaRepositorio;
 import br.com.fiap.gerente_carrinho.utils.CodigoResposta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,19 +18,17 @@ public class ContaController {
     public static final String ERRO_IEM = "Item NÃO encontrado.";
     public static final String ERRO_CLIENTE = "Cliente NÃO encontrado.";
     public static final String SUCESSO = "Conta ADICIONADO com sucesso.";
-
-    private final IContaRepositorio contaRepositorio;
+    private static final String DELETE_SUCESSO = "Item DELETADO da conta com sucesso.";
 
     private final ContaFacade contaFacade;
 
     @Autowired
-    public ContaController(IContaRepositorio servicosRepositorio, ContaFacade contaFacade) {
-        this.contaRepositorio = servicosRepositorio;
+    public ContaController(ContaFacade contaFacade) {
         this.contaFacade = contaFacade;
     }
 
     @PostMapping
-    public ResponseEntity<?> salva(@RequestBody Conta conta) {
+    public ResponseEntity<Object> salva(@RequestBody Conta conta) {
 
         CodigoResposta resp = contaFacade.salvar(conta);
         if ( resp == CodigoResposta.INTEM_NAO_EXISTE) {
@@ -50,7 +45,7 @@ public class ContaController {
     public ResponseEntity<Object> deletePorId(@PathVariable Long id) {
 
         contaFacade.remove(id);
-        return ResponseEntity.ok("Item DELETADO do carrinho com sucesso.");
+        return ResponseEntity.ok(DELETE_SUCESSO);
     }
 
     @GetMapping("/{data}")
@@ -58,8 +53,8 @@ public class ContaController {
 
         List<Conta> conta = contaFacade.listaContaUsuario(data);
 
-        if (conta.size() == 0) {
-            return ResponseEntity.badRequest().body("{\"Erro\": \"Item NÃO cadastrado.\"}");
+        if (conta.isEmpty()) {
+            return ResponseEntity.badRequest().body(ERRO_IEM);
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(conta);

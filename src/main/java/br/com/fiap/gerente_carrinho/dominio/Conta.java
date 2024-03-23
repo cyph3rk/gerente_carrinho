@@ -42,6 +42,4 @@ public class Conta {
     @JsonProperty
     private String situacao;
 
-    public Conta() { };
-
 }
