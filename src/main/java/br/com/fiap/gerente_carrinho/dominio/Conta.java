@@ -2,7 +2,6 @@ package br.com.fiap.gerente_carrinho.dominio;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +10,6 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Entity
-@AllArgsConstructor
 @Table(name = "conta")
 public class Conta {
 
