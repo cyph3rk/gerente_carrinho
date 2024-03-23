@@ -2,6 +2,7 @@ package br.com.fiap.gerente_carrinho.security;
 
 import br.com.fiap.gerente_carrinho.dominio.Usuario;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -51,18 +52,8 @@ public class SecurityFilter extends OncePerRequestFilter {
                         login
                 );
 
-                UserDetails user = modelMapper.map(responseAPI.getBody(), Usuario.class);
-
-//                JsonNode userJson = objectMapper.readTree(responseAPI.getBody());
-//                UserDetails user2 = (UserDetails) userJson.get(responseAPI.getBody());
-//                logger.info("GET - user2: " + user2.getUsername() + " - " + user2.getPassword());
-
-
-                logger.info("GET - responseAPI.getBody(): " + responseAPI.getBody());
-                logger.info("GET - --->>> 1: " + user.toString());
-                logger.info("GET - --->>> 2: " + user.toString());
-                logger.info("GET - --->>> doFilterInternal: " + user.getUsername() + " - " + user.getPassword());
-
+                Gson gson = new Gson();
+                UserDetails user = gson.fromJson(responseAPI.getBody(), Usuario.class);
                 var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
