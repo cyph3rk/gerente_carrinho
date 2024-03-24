@@ -25,9 +25,9 @@ import java.util.stream.Collectors;
 @Service
 public class CarrinhoFacade {
 
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     private final ICarrinhoRepositorio carrinhoRepositorio;
 
@@ -173,7 +173,6 @@ public class CarrinhoFacade {
             return CodigoResposta.CARRINHO_VAZIO;
         }
 
-        List<Conta> contaList;
         for (Carrinho carrinho : carrinhoList) {
             JsonNode itensJson = pegaItem(carrinho.getId_itens());
             if (itensJson.isEmpty()) {
