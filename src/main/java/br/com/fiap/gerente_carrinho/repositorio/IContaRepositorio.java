@@ -14,6 +14,5 @@ import java.util.List;
 @Repository
 public interface IContaRepositorio extends JpaRepository<Conta, Long> {
 
-
     List<Conta> findItemsByData(LocalDateTime data);
 }
